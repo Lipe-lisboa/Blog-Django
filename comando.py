@@ -27,15 +27,6 @@
 
 # pasta dotenv_files: variaveis de ambiente
 
-# depois de criar e configurar todos od arquivos docker:
-# docker-compose up --build (--build só na primeira vez)
-# docker ps -a
-# docker rm f32 c64
-# docker image ls
-# docker image rm 498 055 5a6 99a 912
-# docker container ls
-
-
 # arquivo .dockerignore: coisas para o docker ignorar (pegar no google)
 
 # precisa criar um arquivo urls.py em cada app
