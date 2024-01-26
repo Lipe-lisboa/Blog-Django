@@ -1,19 +1,15 @@
 # django-admin startproject project .  -> criar a pasta do projeto
 
 
-# cd djangoapp 
 # py manage.py startapp blog
 
-# py djangoapp/manage.py runserver -> subir o servidor
+# py manage.py runserver -> subir o servidor
 
 # contro + C -> para o servidor
 
 # settings.py -> lugar onde configura o projeto
 
 # python manage.py collectstatic
-
-#pip install whitenoise
-
 
 #   STATICFILES_DIRS = [
 #       BASE_DIR/ 'base_static',
