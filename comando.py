@@ -43,7 +43,8 @@ python manage.py migrate
 Criando e modificando a senha de um super usuário Django
 
 
-python manage.py createsuperuser
+
+python manage.py createsuperuser (depois de criar um app)
 python manage.py changepassword USERNAME
 
 '''
