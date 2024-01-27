@@ -1,5 +1,6 @@
 from django.db import models
-
+from utils.validate import valideta_png
+from utils.images import resize_image
 # Create your models here.
 
 
@@ -19,7 +20,30 @@ class SiteSetup(models.Model):
     show_description = models.BooleanField(default=True)
     show_pagination = models.BooleanField(default=True)
     show_footer = models.BooleanField(default=True)
-
+    favicon = models.ImageField( #pip install pillow
+        blank=True,
+        upload_to='assets/%Y/%m/',
+        validators= [valideta_png]
+        )
+    
+    def save(self,*args, **kwargs):
+        #antes de salvar
+        favicon_name_atual = self.favicon.name
+        super().save(*args, **kwargs)
+        #depois de salvar
+        favicon_changed = False
+        new_favicon_name = None
+        
+        if self.favicon:
+            new_favicon_name = self.favicon.name
+            favicon_changed = bool(favicon_name_atual  != new_favicon_name)
+        
+        
+        print(f'favicon foi alterado? {favicon_changed}')
+        if favicon_changed:
+            resize_image(self.favicon, 32)
+        
+        
     def __str__(self):
         return self.title
 

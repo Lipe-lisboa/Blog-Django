@@ -24,5 +24,5 @@ class SiteSetupAdmin(admin.ModelAdmin):
     
     #não permitir o usuario criar mais de um setup
     def has_add_permission(self, request):
-        existe_uma_configuracao = bool(SiteSetup.objects.exists())
-        return not existe_uma_configuracao
+        exists_setup = bool(SiteSetup.objects.exists())
+        return not exists_setup

@@ -4,6 +4,7 @@
 gunicorn-error-log
 __localcode
 /data/
+site_setup/comentarios.txt
 
 # Django #
 *.log
