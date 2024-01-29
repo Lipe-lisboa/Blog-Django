@@ -1,6 +1,15 @@
-{% extends "global/base.html" %}
+{% extends "blog/base.html" %}
 
 {% block content %}
-    
+<main class="main-content section-wrapper">
+    <div class="section-content-wide">
+      <div class="section-gap">
+
+        <div class="card-grid">
+            {% include 'blog/partials/_post-card.html'%}
+        </div>
+      </div>
+    </div>
+  </main>
 {% endblock content %}
 
