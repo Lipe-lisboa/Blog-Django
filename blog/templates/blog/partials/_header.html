@@ -6,16 +6,20 @@
 <img src="{{site_setup.favicon.url}}" alt="">
 -->
 
-<aside class="menu white_bg">
+<!--
+<header class="menu white_bg">
     <div class="main_content" id="menu_content">
 
-        <header>
-            <div class="text-header-menu">
-                <h1>Blog do Filipe</h1>
-
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam, vel placeat atque omnis eveniet, sit ut harum laboriosam reiciendis, repellendus consequuntur ratione natus. Similique voluptatem iure eos error, debitis quidem!Z Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum incidunt placeat delectus laborum. Quod, mollitia! Laboriosam voluptas incidunt itaque voluptatem et ab exercitationem aliquam porro odio accusamus, perferendis aperiam obcaecati.</p>
-            </div>
-        </header>
+      <h1 class="blog-title center pb-base">
+        <a class="blog-link" href="/"> Blog do Luiz </a>
+      </h1>
+      
+      <p class="blog-description pb-base center">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ipsam
+        neque explicabo sequi, voluptas saepe porro atque provident, reiciendis
+        natus harum labore nisi eum consectetur cumque minima dolorem adipisci?
+        Dolores?
+      </p>
         
         <nav class="list_content">
 
@@ -47,5 +51,72 @@
             </ul>
         </nav>
     </div>
-</aside>
+  </header>
 
+
+-->
+
+<header class="header section-wrapper">
+
+  <h1 class="blog-title text-center  section-gap">
+    <a class="blog-link" href="/"> {{site_setup.title}} </a>
+  </h1>
+
+  <div class="section-content-big">
+    <div class="section-gap">
+      
+      {% if site_setup.show_description %}
+        <p class="blog-description padding-bottom-base text-center">
+          {{site_setup.description}}
+        </p>
+      {% endif %}
+
+
+      {% if  site_setup.show_search%}
+        <div class="search padding-bottom-base text-center">
+          <form class="search-form" action="#" method="get">
+            <div class="search-content">
+              <label class="sr-only" id="search-label" for="search-input">Search</label>
+              <input
+                class="search-input"
+                type="search"
+                name="search"
+                id="search-input"
+                placeholder="Search"
+                value=""
+              >
+              <button class="search-btn" type="submit" aria-labelledby="search-label">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      {% endif %}
+
+      <!--
+        toda vez que o filho (MenuLink) tiver uma for  para o pai 
+        (SiteSetup) eu posso acessar o filho fazendo isso {{site_setup.menulink_set.all}}
+      -->
+      
+
+      {% if site_setup.show_menu %}
+        <nav class="menu section-content-medium">
+          <ul class="menu-items ">
+            {% for link in site_setup.menulink_set.all%}
+
+              <li class="menu-item">
+                {% if link.new_tab %}
+                <a target="_blank" class="menu-link" href="{{link.url_or_path}}">{{link.text}}</a>
+                {% else %}
+                  <a class="menu-link" href="{{link.url_or_path}}">{{link.text}}</a>
+                {% endif %}
+              </li>
+              
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
+      
+    </div>
+  </div>
+</header>
