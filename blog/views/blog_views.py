@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from blog.models import Tag
+from blog.models import Tag, Category, Page
 
 posts = list(range(1000))
 
@@ -19,6 +19,7 @@ def index (request):
     )
 
 def page(request):
+    page = Page.objects.all()
     paginator = Paginator(posts, 9)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -28,12 +29,15 @@ def page(request):
         'blog/pages/page.html',
         {
             # 'page_obj': page_obj,
+            'page':page
         }
     )
 
 
 def post(request):
     tags = Tag.objects.all()
+    categorys = Category.objects.all()
+    
     paginator = Paginator(posts, 9)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -44,5 +48,6 @@ def post(request):
         {
             # 'page_obj': page_obj,
             'tags':tags,
+            'categorys':categorys
         }
     )

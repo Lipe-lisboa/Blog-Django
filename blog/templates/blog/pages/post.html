@@ -18,7 +18,7 @@
               <a class="post-meta-link" href="#">
                 <i class="fa-solid fa-user"></i>
                 <span>
-                  Author Full Name
+                  Author_name
                 </span>
               </a>
             </div>
@@ -27,7 +27,7 @@
               <a class="post-meta-link" href="#">
                 <i class="fa-solid fa-calendar-days"></i>
                 <span>
-                  20/04/2023
+                  data_create
                 </span>
               </a>
             </div>
@@ -36,12 +36,14 @@
               <a class="post-meta-link" href="#">
                 <i class="fa-solid fa-tag"></i>
                 <span>
-                  Categoria
+                  {% for category in categorys  %}
+                    {{category.name}}
+                  {% endfor %}
                 </span>
               </a>
             </div>
-
       </div>
+      
 
       <p class="single-post-excerpt padding-bottom-base">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, vero

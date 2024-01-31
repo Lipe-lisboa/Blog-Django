@@ -2,11 +2,15 @@
 
 {% block content %}
 <main class="main-content section-wrapper">
+  {% for p in page %}
     <div class="section-content-medium">
       <div class="section-gap">
-        <h1 class="text-center">A page 😍</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium eaque placeat, optio architecto dignissimos est iure ipsum, iste doloribus dolorum nostrum veniam aspernatur adipisci eos et ab facilis, fugit labore!</p>
+        
+        <h1 class="text-center">{{p.title}} 😍</h1>
+        {{p.content}}
+        
       </div>
     </div>
+  {% endfor %}
   </main>
 {% endblock content %}
