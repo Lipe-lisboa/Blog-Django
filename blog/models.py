@@ -1,6 +1,7 @@
 from django.db import models
 from utils.rands import slugify_new
 import datetime
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -65,19 +66,79 @@ class Page(models.Model):
     def __str__(self) -> str:
         return self.title
         
-        
-#class Category(models.Model):
-#    class Meta:
-#        verbose_name = 'Category'
-#        verbose_name_plural = 'Category'
-    
-#    data_now = datetime.date.today()
-    
-#    Author_name = models.CharField(max_length=225)
-#    data_create = models.CharField(default=str(datetime.date.strftime(data_now,'%d/%m/%Y')), max_length=225)
-#    category = models.CharField(max_length=225)
+class Post(models.Model):
+    class Meta:
+        verbose_name = 'Post'
+        verbose_name_plural = 'Posts'
 
-#    def __str__(self) -> str:
-#        return self.Author_name
+    title = models.CharField(max_length=65)
+
+    slug = models.SlugField(
+        unique=True, default=None,
+        null=True, blank=True, max_length=70,
+    )
+    
+    excerpt =  models.CharField(max_length=150) # um resumo (subtitle)
+    
+    is_published = models.BooleanField(
+        default=False,
+        help_text = 'Este campo precisa estar marcado para o post ser exibida publicamente'
+        )
+    
+    content = models.TextField()
+    
+    cover = models.ImageField(upload_to='posts/%Y/%m/', blank=True)
+    cover_in_post_content = models.BooleanField(
+        default=True,
+        help_text = 'Este campo precisa estar marcado para exibir a capa entro do post',
+    )
+
+    #data_now = datetime.date.today()
+    #data_create = models.CharField(default=str(datetime.date.strftime(data_now,'%d/%m/%Y')), max_length=225)
+    
+    #auto_now_add=True gera a data altomaticamente só um vez 
+    #auto_now=True gera uma nova dada toda vez que eu salvar o campo 
+    date_Time_created = models.DateTimeField(auto_now_add=True)
+    date_Time_updated = models.DateTimeField(auto_now=True) 
+    
+    #user.post_user_created.all
+    user_created = models.ForeignKey(
+        User, on_delete= models.SET_NULL,
+        blank=True, null=True,
+        related_name= 'post_created'
+        
+    )
+    
+    #user.post_updated.all
+    user_updated = models.ForeignKey(
+        User, on_delete= models.SET_NULL,
+        blank=True, null=True,
+        related_name= 'post_updated' 
+    )
+    user_update = ...
+
+    #relação de muitos para um. varios posts para uma categoria
+    #Posts pertence a Category, entao o certo é colocar a ForeignKey aqui
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, blank=True,
+    )
+    
+    #relação de muitos para muitos. varios posts pode ter varias tags, ou vice e versa
+    #Posts pertence a Category, entao o certo é colocar a ForeignKey aqui
+    tags = models.ManyToManyField(
+        Tag, blank=True, default=''
+    )
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify_new(self.title)
+        return super().save(*args, **kwargs)
+            
+    def __str__(self) -> str:
+        return self.title
+
+
+
+
 
 

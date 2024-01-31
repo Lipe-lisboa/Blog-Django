@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from blog.models import Tag, Category, Page
+from blog.models import Page, Post
 
 posts = list(range(1000))
 
@@ -35,9 +35,8 @@ def page(request):
 
 
 def post(request):
-    tags = Tag.objects.all()
-    categorys = Category.objects.all()
     
+    posts = Post.objects.all()
     paginator = Paginator(posts, 9)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -47,7 +46,6 @@ def post(request):
         'blog/pages/post.html',
         {
             # 'page_obj': page_obj,
-            'tags':tags,
-            'categorys':categorys
+            'posts':posts
         }
     )

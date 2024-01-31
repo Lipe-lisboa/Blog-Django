@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Tag,  Category, Page
+from blog.models import Tag,  Category, Page,Post
 
 # Register your models here.
 
@@ -39,3 +39,24 @@ class PageAdmin(admin.ModelAdmin):
     prepopulated_fields = { #este campo slug é prenchido altomaticamente com o nome da tag
         "slug": ('title',)
     }
+    
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+
+    list_display = 'id', 'title', 'is_published',  'user_created',
+    list_display_links = 'title',
+    search_fields = 'id', 'slug', 'title', 'excerpt', 'content',
+    list_per_page = 50
+    list_filter = 'category', 'is_published',
+    list_editable = 'is_published',
+    ordering = '-id',
+    readonly_fields = (
+        'date_Time_created', 'date_Time_updated', 'user_created', 'user_updated',
+    
+    )
+    prepopulated_fields = {
+        "slug": ('title',),
+    }
+    autocomplete_fields = 'tags', 'category',
+
+    
