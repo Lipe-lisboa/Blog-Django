@@ -115,7 +115,6 @@ class Post(models.Model):
         blank=True, null=True,
         related_name= 'post_updated' 
     )
-    user_update = ...
 
     #relação de muitos para um. varios posts para uma categoria
     #Posts pertence a Category, entao o certo é colocar a ForeignKey aqui
@@ -126,7 +125,8 @@ class Post(models.Model):
     #relação de muitos para muitos. varios posts pode ter varias tags, ou vice e versa
     #Posts pertence a Category, entao o certo é colocar a ForeignKey aqui
     tags = models.ManyToManyField(
-        Tag, blank=True, default=''
+        Tag, blank=True, default='',
+        related_name= 'tag_post'
     )
     
     def save(self, *args, **kwargs):

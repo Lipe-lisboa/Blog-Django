@@ -5,71 +5,71 @@
   <div class="single-post-content section-content-medium">
     <div class="section-gap">
       
-      {% for post in posts  %}
-        <div class="single-post-img padding-bottom-base">
-          <img loading="lazy" src="https://picsum.photos/1920/1080/?rand=12" alt="Change me">
-        </div>
+      {% for post in page_obj  %}
+        {% if post.is_published %}
+          {% if post.cover_in_post_content %}
+            <div class="single-post-img padding-bottom-base">
+              <img loading="lazy" src="https://picsum.photos/1920/1080/?rand=12" alt="Change me">
+            </div>
+          {% endif %}
 
-        <h2 class="single-post-title padding-bottom-base text-center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </h2>
+          <h2 class="single-post-title padding-bottom-base text-center">
+            {{post.title}}
+          </h2>
 
-        <div class="post-meta padding-bottom-base">
-              <div class="post-meta-item">
-                <a class="post-meta-link" href="#">
-                  <i class="fa-solid fa-user"></i>
-                  <span>
-                    Author_name
-                  </span>
-                </a>
-              </div>
+          <div class="post-meta padding-bottom-base">
+                <div class="post-meta-item">
+                  <a class="post-meta-link" href="#">
+                    <i class="fa-solid fa-user"></i>
+                    <span>
+                      {{post.user_created }}
+                    </span>
+                  </a>
+                </div>
 
-              <div class="post-meta-item">
-                <a class="post-meta-link" href="#">
-                  <i class="fa-solid fa-calendar-days"></i>
-                  <span>
-                    data_create
-                  </span>
-                </a>
-              </div>
+                <div class="post-meta-item">
+                  <a class="post-meta-link" href="#">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>
+                      {{post.date_Time_created}}
+                    </span>
+                  </a>
+                </div>
 
-              <div class="post-meta-item">
-                <a class="post-meta-link" href="#">
-                  <i class="fa-solid fa-tag"></i>
-                  <span>
-                    {% for category in categorys  %}
-                      {{category.name}}
-                    {% endfor %}
-                  </span>
-                </a>
-              </div>
-        </div>
-        
-
-        <p class="single-post-excerpt padding-bottom-base">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, vero
-          fugiat eum perferendis accusamus enim quos obcaecati. Voluptates a vel
-          obcaecati ipsa in dignissimos facere odio et, ab provident assumenda!
-        </p>
-
-        <div class="separator"></div>
-
-        <div class="single-post-content">
-          {% include 'blog/partials/_temp.html' %} 
-        
-          <div class="post-tags">
-            <span>Tags: </span>
-
-            {% for tag in tags  %}
-              <a class="post-tag-link" href="#">
-                <i class="fa-solid fa-link"></i>
-                <span>{{tag.name}}</span>
-              </a>
-            {% endfor %}
-
+                <div class="post-meta-item">
+                  <a class="post-meta-link" href="#">
+                    <i class="fa-solid fa-tag"></i>
+                    <span>
+                        {{post.category}}
+                    </span>
+                  </a>
+                </div>
           </div>
           
-        </div>
+
+          <p class="single-post-excerpt padding-bottom-base">
+            {{post.excerpt}}
+          </p>
+
+          <div class="separator"></div>
+
+          <div class="single-post-content">
+            {% include 'blog/partials/_temp.html' %} 
+          
+            <div class="post-tags">
+              <span>Tags: </span>
+
+              {% for tag in tags  %}
+                <a class="post-tag-link" href="#">
+                  <i class="fa-solid fa-link"></i>
+                  <span>{{tag.name}}</span>
+                </a>
+              {% endfor %}
+
+            </div>
+            
+          </div>
+        {% endif %}
       {% endfor %}
     </div>
   </div>

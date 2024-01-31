@@ -1,38 +1,41 @@
-<article class="card">
-    <div class="card-img-box">
-      <a href="#" class="card-img-link">
-        <img 
-          class="card-img"
-          loading="lazy"
-          src="https://picsum.photos/745/419/?rand=3{{ i }}" 
-          alt="Change me"
-        >
-      </a>
-    </div>
-  
-    <div class="card-text-box">
-        <div class="card-title-box">
-            <h2 class="card-title">
-              <a href="#" class="card-title-link">
-                Lorem ipsum dolor sit amet.
-              </a>
-            </h2>
-        </div>
+{% for post in page_obj%}
+  {% if post.is_published %}
+    <article class="card">
+      <div class="card-img-box">
+        <a href="#" class="card-img-link">
+          <img 
+            class="card-img"
+            loading="lazy"
+            src="https://picsum.photos/745/419/?rand=3{{ i }}" 
+            alt="Change me"
+          >
+        </a>
+      </div>
     
-        <div class="card-content-box">
-            <p class="card-content-p">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur nulla omnis, maiores tempore pariatur a obcaecati atque deserunt reiciendis quam! 
-            </p>
+      <div class="card-text-box">
+          <div class="card-title-box">
+              <h2 class="card-title">
+                <a href="#" class="card-title-link">
+                  {{post.title}}
+                </a>
+              </h2>
+          </div>
       
-            <div class="card-actions-box">
-              <a class="card-action-link" href="#">
-                <span>Read</span>
-                <i class="fa-solid fa-circle-arrow-right"></i>
-              </a>
-            </div>
-        </div>
-    </div>
-  
-  </article>
+          <div class="card-content-box">
+              <p class="card-content-p">
+                {{post.excerpt }}
+              </p>
+        
+              <div class="card-actions-box">
+                <a class="card-action-link" href="#">
+                  <span>Read</span>
+                  <i class="fa-solid fa-circle-arrow-right"></i>
+                </a>
+              </div>
+          </div>
+      </div>
+    </article>
+  {% endif %}
+{% endfor %}
 
   
