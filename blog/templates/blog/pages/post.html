@@ -1,3 +1,8 @@
+<!--
+   <img loading="lazy" src="https://picsum.photos/1920/1080/?rand=12" alt="Change me">
+-->
+
+
 {% extends 'blog/base.html' %} 
 
 {% block content %}
@@ -8,9 +13,11 @@
       {% for post in page_obj  %}
         {% if post.is_published %}
           {% if post.cover_in_post_content %}
-            <div class="single-post-img padding-bottom-base">
-              <img loading="lazy" src="https://picsum.photos/1920/1080/?rand=12" alt="Change me">
-            </div>
+            {% if post.cover %}
+              <div class="single-post-img padding-bottom-base">
+                  <img src=" {{post.cover.url}}" alt="">
+              </div>
+            {% endif %}
           {% endif %}
 
           <h2 class="single-post-title padding-bottom-base text-center">

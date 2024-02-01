@@ -2,6 +2,7 @@ from django.db import models
 from utils.rands import slugify_new
 import datetime
 from django.contrib.auth.models import User
+from utils.images import resize_image
 
 
 # Create your models here.
@@ -132,7 +133,23 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify_new(self.title)
-        return super().save(*args, **kwargs)
+            
+        cover_name_atual = self.cover.name
+        super_save = super().save(*args, **kwargs)
+    
+        cover_changed = False
+        new_cover_name = None
+        
+        if self.cover:
+            new_cover_name = self.cover.name
+            cover_changed = bool(cover_name_atual  != new_cover_name)
+        
+        
+        print(f'cover foi alterado? {cover_changed}')
+        if cover_changed:
+            resize_image(self.cover, 900)
+            
+        return super_save
             
     def __str__(self) -> str:
         return self.title

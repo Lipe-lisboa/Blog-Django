@@ -1,17 +1,22 @@
-{% for post in page_obj%}
-  {% if post.is_published %}
-    <article class="card">
-      <div class="card-img-box">
-        <a href="#" class="card-img-link">
-          <img 
+<!--
+<img 
             class="card-img"
             loading="lazy"
             src="https://picsum.photos/745/419/?rand=3{{ i }}" 
             alt="Change me"
           >
-        </a>
-      </div>
-    
+-->
+
+{% for post in page_obj%}
+  {% if post.is_published %}
+    <article class="card">
+      {% if post.cover %}
+        <div class="card-img-box">
+          <a href="#" class="card-img-link">
+            <img src=" {{post.cover.url}}" alt="">
+          </a>
+        </div>
+      {% endif %}
       <div class="card-text-box">
           <div class="card-title-box">
               <h2 class="card-title">

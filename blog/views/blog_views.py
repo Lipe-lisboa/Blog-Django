@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from blog.models import Page, Post
 
+
 def index (request):
     posts = Post.objects.all()
-    paginator = Paginator(posts, 1)
+    paginator = Paginator(posts, 9)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -35,7 +36,7 @@ def page(request):
 
 def post(request):
     
-    posts = Post.objects.all()
+    posts = Post.objects.all()    
     paginator = Paginator(posts, 1)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
