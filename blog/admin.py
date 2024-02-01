@@ -2,7 +2,8 @@ from typing import Any
 from django.contrib import admin
 from blog.models import Tag,  Category, Page,Post
 from django_summernote.admin import SummernoteModelAdmin
-
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 # Register your models here.
 
 @admin.register(Tag)
@@ -56,7 +57,7 @@ class PostAdmin(SummernoteModelAdmin):
     list_editable = 'is_published',
     ordering = '-id',
     readonly_fields = (
-        'date_Time_created', 'date_Time_updated', 'user_created', 'user_updated',
+        'date_Time_created', 'date_Time_updated', 'user_created', 'user_updated', 'link',
     
     )
     prepopulated_fields = {
@@ -64,9 +65,14 @@ class PostAdmin(SummernoteModelAdmin):
     }
     autocomplete_fields = 'tags', 'category',
     
-    
-    
-    
+    def link(self, obj):
+        if obj.slug:
+            #url_post = reverse('blog:post', args=(obj.slug,))
+            url_post = obj.get_absolute_url()
+            link_post = mark_safe(f'<a target="_blank" href="{url_post}">ver post</a>') 
+            return  link_post
+        
+        return '-'
     #obj : oq esta sendo alterado
     #form: o forme que esta sendo usado
     #change: se o usuario esta alterando algo ou não

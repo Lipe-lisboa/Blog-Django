@@ -26,6 +26,7 @@ class SiteSetup(models.Model):
         validators= [valideta_png]
         )
     
+    
     def save(self,*args, **kwargs):
         #antes de salvar
         favicon_name_atual = self.favicon.name
