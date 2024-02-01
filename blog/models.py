@@ -3,10 +3,29 @@ from utils.rands import slugify_new
 import datetime
 from django.contrib.auth.models import User
 from utils.images import resize_image
+from django_summernote.models import AbstractAttachment
 
 
 # Create your models here.
+class PostAttachment(AbstractAttachment):
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = self.file.name
+            
+        img_name_atual = self.file.name
+        super_save = super().save(*args, **kwargs)
 
+        img_changed = False
+        new_img_name = None
+        
+        if self.file:
+            new_img_name = self.file.name
+            img_changed = bool(img_name_atual  != new_img_name)
+        
+        if img_changed:
+            resize_image(self.file, 900)
+        
+        return super_save
 class Tag(models.Model):
     class Meta:
         verbose_name = 'Tag'
@@ -45,7 +64,6 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
-
 class Page(models.Model):
     
     title = models.CharField(max_length=65)
@@ -66,12 +84,21 @@ class Page(models.Model):
             
     def __str__(self) -> str:
         return self.title
-        
+    
+    
+class PostManager(models.Manager):
+    def get_published(self):
+        #self == objects
+        return self\
+            .filter(is_published=True)\
+            .order_by('-id')   
+
 class Post(models.Model):
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
-
+    
+    objects = PostManager()
     title = models.CharField(max_length=65)
 
     slug = models.SlugField(
@@ -153,6 +180,8 @@ class Post(models.Model):
             
     def __str__(self) -> str:
         return self.title
+
+
 
 
 

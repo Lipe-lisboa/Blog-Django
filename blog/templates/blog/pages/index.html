@@ -5,9 +5,21 @@
     <div class="section-content-big">
       <div class="section-gap">
         
-        <div class="card-grid">
-          {% include "blog/partials/_post-card.html" %}
-        </div>
+        {% if page_obj %}
+          <div class="card-grid">
+            {% include "blog/partials/_post-card.html" %}
+          </div>
+
+        {% else %}
+          <div class="not-post text-center">
+            <h1>Nada encontrado☹️</h1>
+            <p>
+              Não encontrei nada nesse link, por favor,
+              click em outro link do nosso blog
+              ou vá para a <a href="{% url "blog:index" %}">Home</a>
+              .</p>
+          </div>
+        {% endif %}
 
     </div>
   </main>
