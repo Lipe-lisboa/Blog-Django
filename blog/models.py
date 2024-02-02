@@ -91,7 +91,7 @@ class PostManager(models.Manager):
         #self == objects
         return self\
             .filter(is_published=True)\
-            .order_by('-id')   
+            .order_by('-id')
 
 class Post(models.Model):
     class Meta:

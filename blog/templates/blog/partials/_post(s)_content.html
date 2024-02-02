@@ -1,0 +1,67 @@
+{% if post.cover and post.cover_in_post_content%}
+    <div class="single-post-img padding-bottom-base">
+        <img loading="lazy" src=" {{post.cover.url}}" alt="cover do post {{post.title}}">
+    </div>
+{% endif %}
+
+<h2 class="single-post-title padding-bottom-base text-center">
+{{post.title}}
+</h2>
+
+<div class="post-meta padding-bottom-base">
+    <div class="post-meta-item">
+        <a class="post-meta-link" href="{% url "blog:author_created" post.user_created.id  %}">
+        <i class="fa-solid fa-user"></i>
+        <span>
+            {% if post.user_created.first_name %}
+                {{post.user_created.first_name}}
+                {{post.user_created.last_name}}
+            {% else %}
+                {{post.user_created.username}}
+            {% endif %}
+        </span>
+        </a>
+    </div>
+
+    <div class="post-meta-item">
+        <span class="post-meta-link" href="#">
+        <i class="fa-solid fa-calendar-days"></i>
+            {{post.date_Time_created }}
+    </span>
+    </div>
+
+    {% if  post.category %}
+        <div class="post-meta-item">
+            <a class="post-meta-link" href="{% url "blog:category" post.category.slug  %}">
+            <i class="fa-solid fa-tag"></i>
+            <span>
+                {{post.category.name}}
+            </span>
+            </a>
+        </div>
+    {% endif %}
+</div>
+          
+
+<p class="single-post-excerpt padding-bottom-base">
+{{post.excerpt}}
+</p>
+
+<div class="separator"></div>
+
+<div class="single-post-content">
+    {{post.content}}
+          
+    <div class="post-tags">
+        <span>Tags: </span>
+
+        {% for tag in tags  %}
+        <a class="post-tag-link" href="#">
+            <i class="fa-solid fa-link"></i>
+            <span>{{tag.name}}</span>
+        </a>
+        {% endfor %}
+
+    </div>
+            
+</div>

@@ -1,15 +1,13 @@
-<!--
-   <img loading="lazy" src="https://picsum.photos/1920/1080/?rand=12" alt="Change me">
--->
-
-
 {% extends 'blog/base.html' %} 
 
 {% block content %}
 <main class="main-content single-post section-wrapper">
   <div class="single-post-content section-content-medium">
     <div class="section-gap">
+      
+      {% for post in page_obj  %}
         {% include "blog/partials/_post(s)_content.html" %}
+      {% endfor %}
     </div>
   </div>
 </main>
