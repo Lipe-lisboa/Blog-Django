@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from blog.models import Page, Post
+from blog.models import Page, Post 
+from django.db.models import Q
 
 
 
@@ -48,6 +49,44 @@ def category (request, slug):
         'blog/pages/index.html',
         {
             'page_obj': page_obj,
+        }
+    )
+
+def tag(request, slug):
+        #posts = Post.objects.order_by('-id').filter(is_published=True)
+    
+    #como a category é uma forenkey do Post, para pegar algum campo
+    # de category, eu tenho que utilizar dois anderline
+    posts = Post.objects.get_published().filter(tags__slug=slug)
+    paginator = Paginator(posts, 9)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render( 
+        request,
+        'blog/pages/index.html',
+        {
+            'page_obj': page_obj,
+        }
+    )
+    
+def search(request):
+    search_value = request.GET.get('search', '').strip()
+    posts = Post.objects.get_published().filter(
+        Q(title__icontains=search_value) |
+        Q(excerpt__icontains=search_value) |
+        Q(content__icontains=search_value)
+    )
+    paginator = Paginator(posts, 9)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render( 
+        request,
+        'blog/pages/index.html',
+        {
+            'page_obj': page_obj,
+            'search_value':search_value
         }
     )
     

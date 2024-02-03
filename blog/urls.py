@@ -19,4 +19,6 @@ urlpatterns = [
     # links url 
     path('author_created/<int:author_id>/', views.author_created, name='author_created'),
     path('category/<slug:slug>/', views.category, name='category'),
+    path('tag/<slug:slug>/', views.tag, name='tag'),
+    path('search/', views.search, name='search'),
 ]  

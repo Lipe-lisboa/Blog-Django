@@ -54,14 +54,16 @@
           
     <div class="post-tags">
         <span>Tags: </span>
-
-        {% for tag in tags  %}
-        <a class="post-tag-link" href="#">
-            <i class="fa-solid fa-link"></i>
-            <span>{{tag.name}}</span>
-        </a>
-        {% endfor %}
-
+        
+        <!--relação muitos para muiros-->
+        {% if post.tags.all.exists %}
+            {% for tag in post.tags.all  %}
+                <a class="post-tag-link" href="{% url "blog:tag" tag.slug %}">
+                    <i class="fa-solid fa-link"></i>
+                    <span>{{tag.name}}</span>
+                </a>
+            {% endfor %}
+        {% endif %}
     </div>
             
 </div>
