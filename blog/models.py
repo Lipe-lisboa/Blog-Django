@@ -26,6 +26,7 @@ class PostAttachment(AbstractAttachment):
             resize_image(self.file, 900)
         
         return super_save
+
 class Tag(models.Model):
     class Meta:
         verbose_name = 'Tag'
