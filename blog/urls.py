@@ -7,7 +7,7 @@ from blog import views
 app_name = 'blog'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.PostListView.as_view(), name='index'),
     
     #page url
     path('page/<slug:slug>/', views.page, name='page'),

@@ -1,4 +1,4 @@
-{% if post.cover and post.cover_in_post_content%}
+{% if is_paginated%}
     <div class="single-post-img padding-bottom-base">
         <img loading="lazy" src=" {{post.cover.url}}" alt="cover do post {{post.title}}">
     </div>

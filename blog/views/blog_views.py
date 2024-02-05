@@ -4,23 +4,60 @@ from blog.models import Page, Post
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.views.generic import ListView
 
+#quando a view não tem muita logica (só pega o valor e passa pro template) ai
+#eu uso função
 
-def index (request):
+#quando a view precisa de uma logica mais complexa (como foi no projeto agenda
+# onde teve que ver se era o metodo get ou post), ou quando se repete muito codigo,
+# ai a class é mais recomendada 
+
+#{'paginator': <django.core.paginator.Paginator object at 0x000001628EE2AAB0>, 'page_obj': <Page 1 of 2>, 'is_paginated': True, 'object_list': <QuerySet [<Post: Post 
+#do João>, <Post: Post da Maria>]>, 'posts': <QuerySet [<Post: Post do João>, <Post: Post da Maria>]>, 'view': <blog.views.blog_views.PostListView object at 0x000001628EEC2900>}
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/pages/index.html'
+    context_object_name  = 'posts'
+    ordering = '-id'
+    paginate_by = 2
+    queryset = Post.objects.get_published
+    
+    
+#    def get_queryset(self):
+#        queryset = super().get_queryset() 
+#        
+#        queryset = queryset.filter(is_published= True)
+#        return queryset
+    
+    def get_context_data(self, **kwargs):
+        
+        context = super().get_context_data(**kwargs)
+        
+        context.update({
+            'page_title': 'Home - '
+        })
+        return context
+    
+    
+    
+    
+#def index (request):
     #posts = Post.objects.order_by('-id').filter(is_published=True)
-    posts = Post.objects.get_published()
-    paginator = Paginator(posts, 9 )
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
-    return render( 
-        request,
-        'blog/pages/index.html',
-        {
-            'page_obj': page_obj,
-            'page_title': 'home - '
-        }
-    )
+#    posts = Post.objects.get_published()
+#    paginator = Paginator(posts, 9 )
+#    page_number = request.GET.get("page")
+#    page_obj = paginator.get_page(page_number)
+#
+#    return render( 
+#        request,
+#        'blog/pages/index.html',
+#        {
+#            'page_obj': page_obj,
+#            'page_title': 'home - '
+#        }
+#    )
     
 def author_created (request, author_id):
     user = User.objects.filter(id=author_id).first()
