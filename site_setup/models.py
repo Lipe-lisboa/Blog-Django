@@ -53,7 +53,7 @@ class MenuLink(models.Model):
         verbose_name = 'Menu Link'
         verbose_name_plural = 'Menu Links'
 
-    text = models.CharField(max_length=5)
+    text = models.CharField(max_length=25)
     url_or_path = models.CharField(max_length=2048)
     new_tab = models.BooleanField(default=False)
     

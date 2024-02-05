@@ -91,11 +91,8 @@ def search(request):
     )
     
 def page(request, slug):
-    page = Page.objects.all()
-    
-    #paginator = Paginator(posts, 9)
-    #page_number = request.GET.get("page")
-    #page_obj = paginator.get_page(page_number)
+    page = Page.objects.get_published().filter(slug=slug).first()
+
 
     return render(
         request,

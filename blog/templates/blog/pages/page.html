@@ -2,15 +2,13 @@
 
 {% block content %}
 <main class="main-content section-wrapper">
-  {% for p in page %}
     <div class="section-content-medium">
       <div class="section-gap">
         
-        <h1 class="text-center">{{p.title}} 😍</h1>
-        {{p.content}}
+        <h1 class="text-center">{{page.title}}</h1>
+        {{page.content | safe}}
         
       </div>
     </div>
-  {% endfor %}
   </main>
 {% endblock content %}
