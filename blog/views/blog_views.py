@@ -1,9 +1,10 @@
+from typing import Any
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from blog.models import Page, Post 
 from django.db.models import Q
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import Http404, HttpRequest, HttpResponse
 from django.views.generic import ListView
 
 #quando a view não tem muita logica (só pega o valor e passa pro template) ai
@@ -20,9 +21,9 @@ class PostListView(ListView):
     model = Post
     template_name = 'blog/pages/index.html'
     context_object_name  = 'posts'
-    ordering = '-id'
+    ordering = '-id',
     paginate_by = 2
-    queryset = Post.objects.get_published
+    queryset = Post.objects.get_published()
     
     
 #    def get_queryset(self):
@@ -40,98 +41,100 @@ class PostListView(ListView):
         })
         return context
     
+class AuthorCreatedListView(PostListView):
     
-    
-    
-#def index (request):
-    #posts = Post.objects.order_by('-id').filter(is_published=True)
-#    posts = Post.objects.get_published()
-#    paginator = Paginator(posts, 9 )
-#    page_number = request.GET.get("page")
-#    page_obj = paginator.get_page(page_number)
-#
-#    return render( 
-#        request,
-#        'blog/pages/index.html',
-#        {
-#            'page_obj': page_obj,
-#            'page_title': 'home - '
-#        }
-#    )
-    
-def author_created (request, author_id):
-    user = User.objects.filter(id=author_id).first()
-    
-    if user is None:
-        raise Http404()
-    posts = Post.objects.get_published().filter(user_created__id=author_id)
-    paginator = Paginator(posts, 9)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    
-    user_full_name = None
-    if user.first_name and user.last_name:
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
         
-        user_full_name = f'{user.first_name} {user.last_name}'
-    else:
-        user_full_name = user.username
+        self._temp_context = {}
+
+    def get_context_data(self, **kwargs):
         
-    page_title  = 'Posts de ' + user_full_name
-    return render( 
-        request,
-        'blog/pages/index.html',
-        {
-            'page_obj': page_obj,
+        context = super().get_context_data(**kwargs)
+        
+        user = self._temp_context['user']
+        
+        user_full_name = None
+        if user.first_name and user.last_name:
+            
+            user_full_name = f'{user.first_name} {user.last_name}'
+        else:
+            user_full_name = user.username
+            
+        page_title  = 'Posts de ' + user_full_name
+        
+        context.update({
+            'page_title':page_title
+        })        
+        return context
+    
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(
+            user_created__id=self._temp_context['user'].id
+        )
+        return queryset
+
+    
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        author_id  = self.kwargs.get('author_id')
+        user = User.objects.filter(id=author_id).first()
+        
+        if user is None:
+            raise Http404()
+        
+        self._temp_context.update({
+            'user':user
+        })
+        
+        return super().get(request, *args, **kwargs)
+    
+
+class CategoryListView(PostListView):
+
+    allow_empty = False # allow_empty = False  é igual     if len(page_obj) == 0:
+                        #                                       raise Http404
+    
+    
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        page_title = f'{self.object_list[0].category.name} - category - '
+        
+        context.update({
             'page_title': page_title
-        }
-    )
-def category (request, slug):
+        })
+        return context
     
-    #como a category é uma forenkey do Post, para pegar algum campo
-    # de category, eu tenho que utilizar dois anderline
-    posts = Post.objects.get_published().filter(category__slug=slug)
-    
-    paginator = Paginator(posts, 9)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(
+            category__slug=self.kwargs.get("slug")
+        )
+        return queryset
 
-    if len(page_obj) == 0:
-        raise Http404
     
-    page_title  = f'{page_obj[0].category.name} - category - '
+class TagListView(PostListView):
     
-    return render( 
-        request,
-        'blog/pages/index.html',
-        {
-            'page_obj': page_obj,
-            'page_title': page_title,
-        }
-    )
-
-def tag(request, slug):
-        #posts = Post.objects.order_by('-id').filter(is_published=True)
+    allow_empty = False
     
-    #como a category é uma forenkey do Post, para pegar algum campo
-    # de category, eu tenho que utilizar dois anderline
-    posts = Post.objects.get_published().filter(tags__slug=slug)
-    paginator = Paginator(posts, 9)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        page_title  = f'{self.object_list[0].tags.first().name} - tag - '
+        context.update({
+            'page_title':page_title
+        })
+        return context
     
-    if len(page_obj) == 0:
-        raise Http404
     
-    page_title  = f'{page_obj[0].tags.first().name} - tag - '
-
-    return render( 
-        request,
-        'blog/pages/index.html',
-        {
-            'page_obj': page_obj,
-            'page_title': page_title 
-        }
-    )
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        queryset  = queryset.filter(
+            tags__slug=self.kwargs.get('slug')
+        )
+        return queryset
+    
     
 def search(request):
     

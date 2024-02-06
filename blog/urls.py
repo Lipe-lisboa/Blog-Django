@@ -17,8 +17,8 @@ urlpatterns = [
     path('posts/', views.posts, name='posts'),
     
     # links url 
-    path('author_created/<int:author_id>/', views.author_created, name='author_created'),
-    path('category/<slug:slug>/', views.category, name='category'),
-    path('tag/<slug:slug>/', views.tag, name='tag'),
+    path('author_created/<int:author_id>/', views.AuthorCreatedListView.as_view(), name='author_created'),
+    path('category/<slug:slug>/', views.CategoryListView.as_view(), name='category'),
+    path('tag/<slug:slug>/', views.TagListView.as_view(), name='tag'),
     path('search/', views.search, name='search'),
 ]  
