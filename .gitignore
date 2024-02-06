@@ -5,6 +5,7 @@ gunicorn-error-log
 __localcode
 /data/
 site_setup/comentarios.txt
+utils/outro.py
 
 # Django #
 *.log
@@ -142,3 +143,4 @@ GitHub.sublime-settings
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+

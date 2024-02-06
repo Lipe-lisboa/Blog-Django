@@ -1,10 +1,3 @@
-
-
-def lower_ip (str:str):
-    print(str.lower())
-    
-lower_ip(('À'))
-
 #def index (request):
     #posts = Post.objects.order_by('-id').filter(is_published=True)
 #    posts = Post.objects.get_published()
@@ -95,5 +88,90 @@ lower_ip(('À'))
 #        {
 #            'page_obj': page_obj,
 #            'page_title': page_title 
+#        }
+#    )
+
+#def search(request):
+#    
+#    
+#    search_value = request.GET.get('search', '').strip()
+#    posts = Post.objects.get_published().filter(
+#        Q(title__icontains=search_value) |
+#        Q(excerpt__icontains=search_value) |
+#        Q(content__icontains=search_value)
+#    )
+#    paginator = Paginator(posts, 9)
+#    page_number = request.GET.get("page")
+#    page_obj = paginator.get_page(page_number)
+#    
+#    
+#    page_title  = f'{search_value[:30]} - Search - '
+#
+#    return render( 
+#        request,
+#        'blog/pages/index.html',
+#        {
+#            'page_obj': page_obj,
+#            'search_value':search_value,
+#            'page_title':page_title,
+#        }
+#    )
+
+
+#def posts(request):
+#
+    #posts = Post.objects.all()    
+#    post = Post.objects.get_published()
+#    paginator = Paginator(post, 1)
+#    page_number = request.GET.get("page")
+#    page_obj = paginator.get_page(page_number)
+#    
+#    if len(page_obj) == 0:
+#        raise Http404
+#    
+#    page_title  = f'{page_obj[0].title} - Post - '
+# 
+#    return render(
+#        request,
+#        'blog/pages/posts.html',
+#        {
+#            'page_obj': page_obj,
+#            'page_title':page_title
+#        }
+#    )
+
+#def page(request, slug):
+#    
+#    page = Page.objects.get_published().filter(slug=slug).first()
+#
+#
+#    if not page:
+#        raise Http404
+#    page_title  = f'{page.title} - Page - '
+#    
+#    return render(
+#        request,
+#        'blog/pages/page.html',
+#        {
+#            # 'page_obj': page_obj,
+#            'page':page,
+#            'page_title':page_title
+#        }
+#    )
+
+#def post(request, slug):
+#
+#    post = Post.objects.get_published().filter(slug=slug).first()
+#    
+#    if not post:
+#        raise Http404
+#    page_title  = f'{post.title} - Post - '
+#    
+#    return render(
+#        request,
+#        'blog/pages/post.html',
+#        {
+#            'post': post,
+#            'page_title': page_title
 #        }
 #    )
